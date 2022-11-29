@@ -1,8 +1,14 @@
 import styled from "styled-components";
 import Logout from "./Logout";
+import ChatInput from "./ChatInput";
+import Messages from "./Messages";
 
 export default function ChatContainer({currentChat}) {
 	
+	const handleSendMsg = async(msg) => {
+
+	}
+
 	return (
 		<>
 			{
@@ -25,7 +31,7 @@ export default function ChatContainer({currentChat}) {
 						</div>
 
 						<div className="chat-messages">
-							
+							<ChatInput handleSendMessage={handleSendMsg} />	
 						</div>
 
 					</Container>
@@ -88,7 +94,7 @@ const Container = styled.div`
 		
     	.message {
       		display: flex;
-			  align-items: center;
+			align-items: center;
 			  
 			.content {
 				max-width: 40%;
@@ -111,7 +117,7 @@ const Container = styled.div`
 	}
 	
     .recieved {
-	  	ustify-content: flex-start;
+	  	justify-content: flex-start;
 	  
       	.content {
         	background-color: #9900ff20;
