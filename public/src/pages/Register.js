@@ -45,7 +45,7 @@ export default function Register() {
 			});
 			
 			if (data.data.status === true) {
-				localStorage.setItem('chat-app-user', JSON.stringify(data.user))
+				localStorage.setItem('chat-app-user', JSON.stringify(data.data.user))
 				navigate("/");
 			} else if (data.data.status === false) {
 				toast.error(data.data.msg, toastOptions)
