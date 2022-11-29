@@ -35,13 +35,12 @@ export default function Login() {
 				password
 			});
 			
-			if (data.status) {
+			if (data.data.status === true) {
 				localStorage.setItem('chat-app-user', JSON.stringify(data.user))
-			} else {
-				toast.error(data.msg, toastOptions)
+				navigate("/");
+			}else if (data.data.status === false) {
+				toast.error(data.data.msg, toastOptions)
 			}
-
-			navigate("/");
 		}
 	}
 
@@ -49,12 +48,12 @@ export default function Login() {
 		const {username, password} = values;
 
 		if (username === "") {
-			toast.error("Email and Password is required", toastOptions);
+			toast.error("Username and Password is required", toastOptions);
 
 			return false;
 
 		} else if (password === "") {
-			toast.error("Email and Password is required", toastOptions);
+			toast.error("Username and Password is required", toastOptions);
 
 			return false;
 		} 

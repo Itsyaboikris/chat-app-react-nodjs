@@ -38,13 +38,14 @@ export default function Register() {
 				password
 			});
 			
-			if (data.status) {
+			if (data.data.status === true) {
 				localStorage.setItem('chat-app-user', JSON.stringify(data.user))
-			} else {
-				toast.error(data.msg, toastOptions)
+				navigate("/");
+			} else if (data.data.status === false) {
+				toast.error(data.data.msg, toastOptions)
 			}
 
-			navigate("/");
+			
 		}
 	}
 
