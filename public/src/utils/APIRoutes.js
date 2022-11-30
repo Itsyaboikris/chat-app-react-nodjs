@@ -7,3 +7,6 @@ export const setAvatarRoute = `${host}/api/auth/setAvatar`;
 
 export const allUsersRoute = `${host}/api/auth/allUsers`;
 export const logoutRoute = `${host}/api/auth/logout`;
+
+export const sendMEssageRoute = `${host}/api/message/addmessage`;
+export const getAllMessageRoute = `${host}/api/message/getmessage`;

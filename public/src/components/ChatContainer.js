@@ -1,12 +1,38 @@
 import styled from "styled-components";
 import Logout from "./Logout";
 import ChatInput from "./ChatInput";
-import Messages from "./Messages";
+import axios from "axios";
+import { sendMEssageRoute, getAllMessageRoute } from "../utils/APIRoutes";
+import { useEffect } from "react";
+import { useState } from "react";
 
-export default function ChatContainer({currentChat}) {
+export default function ChatContainer({currentChat, currentUser}) {
 	
-	const handleSendMsg = async(msg) => {
 
+	const [messages, setMessages] = useState([]);
+
+	useEffect( () => {
+
+		async function fetchChat() {
+			const response = await axios.post(getAllMessageRoute, {
+				from: currentUser?._id,
+				to: currentChat?._id,
+			});
+
+			console.log(response)
+
+			setMessages(response.data);
+		}
+		fetchChat();
+
+	}, [currentChat])
+
+	const handleSendMsg = async(msg) => {
+		await axios.post(sendMEssageRoute, {
+			from: currentUser._id,
+			to: currentChat._id,
+			message:msg
+		})
 	}
 
 	return (
@@ -26,13 +52,23 @@ export default function ChatContainer({currentChat}) {
 							<Logout />
 						</div>
 
-						<div className="chat-input">
-
-						</div>
-
 						<div className="chat-messages">
-							<ChatInput handleSendMessage={handleSendMsg} />	
+							{
+								messages.map((message, idx) => {
+									return (
+										<div key={idx}>
+											<div className={`message ${message.fromSelf ? "sender" : "receiver"}`}>
+												<div className="content">
+													<p>{message.message}</p>
+												</div>
+											</div>
+										</div>
+									)
+								})
+							}
 						</div>
+
+						<ChatInput handleSendMessage={handleSendMsg} />	
 
 					</Container>
 				)
@@ -42,86 +78,85 @@ export default function ChatContainer({currentChat}) {
 }
 
 const Container = styled.div`
-  	display: grid;
-  	grid-template-rows: 10% 80% 10%;
-  	gap: 0.1rem;
+	display: grid;
+	grid-template-rows: 10% 80% 10%;
+	gap: 0.1rem;
 	overflow: hidden;
-	  
-  	@media screen and (min-width: 720px) and (max-width: 1080px) {
-    	grid-template-rows: 15% 70% 15%;
+
+	@media screen and (min-width: 720px) and (max-width: 1080px) {
+		grid-template-rows: 15% 70% 15%;
 	}
-	  
-  	.chat-header {
+
+	.chat-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		padding: 0 2rem;
 
-    	.user-details {
+		.user-details {
 			display: flex;
 			align-items: center;
 			gap: 1rem;
-
 			.avatar {
 				img {
 					height: 3rem;
 				}
 			}
-			  
-      		.username {
-        	h3 {
-          		color: white;
-        	}
-     	}
+			.username {
+				h3 {
+					color: white;
+				}
+			}
+		}
 	}
-	
-  	.chat-messages {
+
+	.chat-messages {
 		padding: 1rem 2rem;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		overflow: auto;
 
-    	&::-webkit-scrollbar {
-			  width: 0.2rem;
-			  
+		&::-webkit-scrollbar {
+			width: 0.2rem;
 			&-thumb {
 				background-color: #ffffff39;
 				width: 0.1rem;
 				border-radius: 1rem;
 			}
 		}
-		
-    	.message {
-      		display: flex;
-			align-items: center;
-			  
-			.content {
-				max-width: 40%;
-				overflow-wrap: break-word;
-				padding: 1rem;
-				font-size: 1.1rem;
-				border-radius: 1rem;
-				color: #d1d1d1;
-				@media screen and (min-width: 720px) and (max-width: 1080px) {
+
+	.message {
+		display: flex;
+		align-items: center;
+
+		.content {
+			max-width: 40%;
+			overflow-wrap: break-word;
+			padding: 1rem;
+			font-size: 1.1rem;
+			border-radius: 1rem;
+			color: #d1d1d1;
+
+			@media screen and (min-width: 720px) and (max-width: 1080px) {
 				max-width: 70%;
 			}
-      	}
+		}
+  	}
+
+	.sender {
+		justify-content: flex-end;
+		.content {
+			background-color: #4f04ff21;
+		}
 	}
-	
-    .sended {
-      	justify-content: flex-end;
-      	.content {
-        	background-color: #4f04ff21;
-      	}
+
+	.reciever {
+		justify-content: flex-start;
+		.content {
+			background-color: #9900ff20;
+		}
 	}
-	
-    .recieved {
-	  	justify-content: flex-start;
-	  
-      	.content {
-        	background-color: #9900ff20;
-      	}
-    }
+}
   
 `;

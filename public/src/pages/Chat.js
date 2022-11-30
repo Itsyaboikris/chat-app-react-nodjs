@@ -64,7 +64,7 @@ export default function Chat() {
 						isLoaded && currentChat === undefined ? (
 							<Welcome currentUser={currentUser} />
 						) : (
-							<ChatContainer currentChat={currentChat} />
+							<ChatContainer currentChat={currentChat} currentUser={currentUser} />
 						)
 					}
 					
@@ -84,14 +84,13 @@ const Container = styled.div`
 	gap: 1rem;
 	align-items: center;
 	background-color: #131324;
-
+	
 	.container {
 		height: 85vh;
 		width: 85vw;
 		background-color: #00000076;
 		display: grid;
 		grid-template-columns: 25% 75%;
-
 		@media screen and (min-width: 720px) and (max-width: 1080px) {
 			grid-template-columns: 35% 65%;
 		}
