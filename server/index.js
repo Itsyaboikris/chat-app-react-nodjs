@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import userRouter from "./routes/user.js";
+import messageRouter from "./routes/messages.js";
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,7 @@ const connect = () => {
 
 
 app.use("/api/auth", userRouter);
+app.use("/api/message", messageRouter);
 
 
 app.listen(PORT, () => {
